@@ -37,3 +37,14 @@ Use public transport.
 🔄 İsteğe Bağlı Ekstra
 Kullanıcı "Try again?" seçeneğiyle testi tekrar yapabilir.
 Son puanı ekranda gösterilebilir.
+
+
+------------------
+AMAÇ
+----------------
+-1
+karbon ayak izlerini hesapşayan foksiyonların çalışması
+-2 
+web sitesindeki html kodlarının jinja ile çalışması ve hatasız çalışması 
+-3 
+bu da yeter yaa demi???
