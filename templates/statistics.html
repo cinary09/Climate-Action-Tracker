@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Statistics - Climate Action Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Your Impact Statistics 📊</h1>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Points</h3>
+            <div class="stat-card-value">{{ total_points }}</div>
+            <p class="stat-card-label">Environmental contribution score</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Total Activities</h3>
+            <div class="stat-card-value">{{ total_activities }}</div>
+            <p class="stat-card-label">Actions logged</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Most Common Action</h3>
+            <div class="stat-card-value" style="font-size: 1.2em; padding: 10px;">
+                {% if most_common_activity %}
+                    {{ most_common_activity }}
+                {% else %}
+                    No data yet
+                {% endif %}
+            </div>
+            <p class="stat-card-label">Your favorite activity</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Average Points</h3>
+            <div class="stat-card-value">{{ average_points }}</div>
+            <p class="stat-card-label">Per activity</p>
+        </div>
+    </div>
+
+    <p class="progress-summary">{{ progress_summary }}</p>
+
+    {% if breakdown %}
+        <section class="breakdown-section">
+            <h2>Activity Breakdown</h2>
+            <div class="breakdown-table">
+                <div class="table-header">
+                    <div class="table-cell">Activity</div>
+                    <div class="table-cell">Count</div>
+                    <div class="table-cell">Total Points</div>
+                    <div class="table-cell">% of Total</div>
+                </div>
+
+                {% for activity_name, data in breakdown.items() %}
+                    <div class="table-row">
+                        <div class="table-cell activity-name">{{ ACTIVITY_ICONS.get(activity_name, "") }} {{ activity_name }}</div>
+                        <div class="table-cell">{{ data.count }}</div>
+                        <div class="table-cell">{{ data.points }}</div>
+                        <div class="table-cell">
+                            {% if total_points > 0 %}
+                                {{ ((data.points / total_points) * 100) | round(1) }}%
+                            {% else %}
+                                0%
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="progress-section">
+            <h2>Your Progress</h2>
+            <div class="progress-container">
+                {% for activity_name, data in breakdown.items() %}
+                    <div class="progress-item">
+                        <div class="progress-label">{{ activity_name }}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {% if total_points > 0 %}{{ ((data.points / total_points) * 100) | round(1) }}{% else %}0{% endif %}%"></div>
+                        </div>
+                        <div class="progress-value">{{ data.points }} points</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% else %}
+        <section class="empty-state">
+            <h2>No Activity Data</h2>
+            <p>Start logging activities to see your statistics!</p>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+        </section>
+    {% endif %}
+
+    <section class="info-section">
+        <h2>Understanding Your Impact</h2>
+        <p>Your environmental score represents the cumulative positive impact of your actions. Each activity contributes to reducing greenhouse gas emissions and protecting our planet. Keep tracking your actions and watch your score grow!</p>
+        <ul>
+            <li><strong>Planting Trees (10 points):</strong> Trees absorb CO₂ and combat deforestation</li>
+            <li><strong>Recycling (5 points):</strong> Reduces landfill waste and saves manufacturing energy</li>
+            <li><strong>Public Transportation & Cycling (4 points):</strong> Reduces personal carbon emissions</li>
+            <li><strong>Saving Electricity & Water (3 points):</strong> Reduces energy consumption and resource depletion</li>
+        </ul>
+    </section>
+
+    <div class="back-button">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

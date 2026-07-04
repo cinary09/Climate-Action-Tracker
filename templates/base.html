@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Climate Action Tracker{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <a href="{{ url_for('index') }}">🌍 Climate Action Tracker</a>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="{{ url_for('index') }}" class="nav-link">Home</a></li>
+                {% if g.user %}
+                    <li><a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a></li>
+                    <li><a href="{{ url_for('add_activity') }}" class="nav-link">Add Activity</a></li>
+                    <li><a href="{{ url_for('statistics') }}" class="nav-link">Statistics</a></li>
+                    <li><a href="{{ url_for('logout') }}" class="nav-link logout">Logout ({{ g.user.username }})</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}" class="nav-link">Login</a></li>
+                    <li><a href="{{ url_for('register') }}" class="nav-link register">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-group">
+                        {% for category, message in messages %}
+                            <div class="flash flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Climate Action Tracker. Taking action for our planet.</p>
+    </footer>
+</body>
+</html>
