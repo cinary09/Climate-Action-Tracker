@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Activity - Climate Action Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <h1>Edit Activity</h1>
+        <p class="form-subtitle">Update your climate action record</p>
+
+        <form method="post" class="form">
+            <div class="form-group">
+                <label for="activity_type">Activity</label>
+                <select id="activity_type" name="activity_type" required>
+                    {% for activity_name, points in activity_points.items() %}
+                        <option value="{{ activity_name }}" {% if activity.activity_type == activity_name %}selected{% endif %}>
+                            {{ ACTIVITY_ICONS.get(activity_name, "") }} {{ activity_name }} ({{ points }} points)
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="activity_date">Date</label>
+                <input id="activity_date" name="activity_date" type="date" value="{{ activity.activity_date }}"
+                       min="{{ MIN_ACTIVITY_DATE }}" max="{{ MAX_ACTIVITY_DATE }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea id="notes" name="notes" rows="4">{{ activity.notes }}</textarea>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Update Activity</button>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
