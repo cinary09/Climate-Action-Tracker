@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Delete - Climate Action Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container confirm-box">
+        <h1>Delete this activity?</h1>
+        <p class="form-subtitle">This action cannot be undone.</p>
+
+        <div class="activity-info-box">
+            <h3>{{ ACTIVITY_ICONS.get(activity.activity_type, "") }} {{ activity.activity_type }}</h3>
+            <ul>
+                <li><strong>Points:</strong> {{ activity.points }}</li>
+                <li><strong>Date:</strong> {{ activity.activity_date }}</li>
+                {% if activity.notes %}
+                    <li><strong>Notes:</strong> {{ activity.notes }}</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <form method="post" action="{{ url_for('delete_activity_route', activity_id=activity.id) }}" class="form-actions">
+            <button type="submit" class="btn btn-danger">Yes, delete it</button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
